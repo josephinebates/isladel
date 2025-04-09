@@ -10,7 +10,7 @@ import AuthenticationServices
 import CryptoKit
 
 class AuthManager: NSObject, ObservableObject {
-    @Published var user: MockUser? = nil // Placeholder for Firebase.User
+    @Published var user: MockUser? = nil
     private var currentNonce: String?
 
     static let shared = AuthManager()
@@ -21,13 +21,11 @@ class AuthManager: NSObject, ObservableObject {
     }
 
     func checkUserStatus() {
-        // In production, you'd check FirebaseAuth.auth().currentUser
-        // Here we simulate a signed-out state
-        user = nil
+        // Simulated login for development (bypass)
+        user = MockUser(email: "test@isladel.dev", uid: UUID().uuidString)
     }
 
     func signOut() {
-        // Simulate signing out
         user = nil
     }
 
@@ -83,16 +81,13 @@ class AuthManager: NSObject, ObservableObject {
 
 extension AuthManager: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
+        guard let _ = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
 
-        // In a real app, you'd get the token and sign into Firebase
-        // For now, just simulate a user "logging in"
-        user = MockUser(email: "test@placeholder.com", uid: UUID().uuidString)
-        print("Signed in as \(user?.email ?? "unknown")")
+        // Simulate login result
+        user = MockUser(email: "appleuser@isladel.dev", uid: UUID().uuidString)
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         print("Sign in with Apple failed: \(error.localizedDescription)")
     }
 }
-
