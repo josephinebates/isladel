@@ -15,7 +15,7 @@ struct ContentView: View {
     var body: some View {
         Group {
             if authManager.user != nil {
-                HomeView()
+                MainTabView()
             } else {
                 VStack(spacing: 20) {
                     Text("Welcome to Isladel")
